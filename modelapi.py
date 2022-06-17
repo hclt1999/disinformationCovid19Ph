@@ -126,6 +126,10 @@ api = Api(app)
 parser = reqparse.RequestParser()
 parser.add_argument('data')
 
+tokenizer = RobertaTokenizer.from_pretrained(MODEL_NAME) #Tokenizer
+model = build_model(4)
+model.load_weights(ROBERTA_DISINFORMATION)
+
 # Define how the api will respond to the post requests
 class DisinformationClassifier(Resource):
   def post(self):
@@ -141,7 +145,4 @@ class DisinformationClassifier(Resource):
 api.add_resource(DisinformationClassifier, '/dc')
 
 if __name__ == '__main__':
-  tokenizer = RobertaTokenizer.from_pretrained(MODEL_NAME) #Tokenizer
-  model = build_model(4)
-  model.load_weights(ROBERTA_DISINFORMATION)
-  app.run(debug=True, port=8080)
+  app.run(port=8181)
